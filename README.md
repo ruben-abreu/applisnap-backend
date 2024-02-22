@@ -57,7 +57,7 @@
 {
   boardName: String,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
-  listId: {type: Schema.Types.ObjectId, ref: 'List'},
+  listId: [{type: Schema.Types.ObjectId, ref: 'List'}],
 }
 ```
 
@@ -68,7 +68,7 @@
   listName: String,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
-  jobId: {type: Schema.Types.ObjectId, ref: 'Job'},
+  jobId: [{type: Schema.Types.ObjectId, ref: 'Job'}],
 }
 ```
 
@@ -101,7 +101,7 @@
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
   listId: {type: Schema.Types.ObjectId, ref: 'List'},
-  jobId: {type: Schema.Types.ObjectId, ref: 'Job'},
+  jobId: [{type: Schema.Types.ObjectId, ref: 'Job'}],
 }
 ```
 
