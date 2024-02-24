@@ -22,12 +22,13 @@
 
 ### Job Routes
 
-| Method | Route            | Description            |
-| ------ | ---------------- | ---------------------- |
-| GET    | /api/jobs        | Returns all jobs       |
-| GET    | /api/jobs/:jobId | Returns a specific job |
-| POST   | /api/jobs        | Adds a new job         |
-| DELETE | /api/jobs/:jobId | Deletes a job          |
+| Method | Route            | Description                 |
+| ------ | ---------------- | --------------------------- |
+| GET    | /api/jobs        | Returns all jobs            |
+| GET    | /api/jobs/:jobId | Returns a specific job      |
+| POST   | /api/jobs        | Adds a new job              |
+| PUT    | /api/jobs/:jobId | Edits the specified project |
+| DELETE | /api/jobs/:jobId | Deletes a job               |
 
 ### Role Routes
 
