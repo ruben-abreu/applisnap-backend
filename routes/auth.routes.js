@@ -133,7 +133,7 @@ router.get('/users/:userId', async (req, res, next) => {
 });
 
 router.put('/users/:userId', async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
   const { userId } = req.params;
 
   try {
@@ -155,6 +155,7 @@ router.put('/users/:userId', async (req, res, next) => {
       {
         email,
         password: hashedPassword,
+        name,
       },
       { new: true }
     );
