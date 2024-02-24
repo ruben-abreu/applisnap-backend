@@ -14,7 +14,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Password is required.'],
     },
-    boardId: [{ type: Schema.Types.ObjectId, ref: 'Board' }],
+    boards: [{ type: Schema.Types.ObjectId, ref: 'Boards' }],
+    jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
+    roles: [{ type: Schema.Types.ObjectId, ref: 'Roles' }],
+    lists: [{ type: Schema.Types.ObjectId, ref: 'Lists' }],
   },
   {
     timestamps: true,

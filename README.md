@@ -9,6 +9,7 @@
 | GET    | /api/boards          | Returns all boards       |
 | GET    | /api/boards/:boardId | Returns a specific board |
 | POST   | /api/boards          | Adds a new board         |
+| PUT    | /api/boards/:boardId | Edits a board            |
 | DELETE | /api/boards/:boardId | Deletes a board          |
 
 ### List Routes

@@ -12,9 +12,9 @@ const jobsSchema = new Schema({
   date: Object,
   starred: Boolean,
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
-  boardId: { type: Schema.Types.ObjectId, ref: 'Board' },
-  listId: { type: Schema.Types.ObjectId, ref: 'List' },
-  roleId: { type: Schema.Types.ObjectId, ref: 'Role' },
+  boardId: { type: Schema.Types.ObjectId, ref: 'Boards' },
+  listId: { type: Schema.Types.ObjectId, ref: 'Lists' },
+  roleId: { type: Schema.Types.ObjectId, ref: 'Roles' },
 });
 
 module.exports = model('Jobs', jobsSchema);

@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
-const Role = require('../models/Role.model.js');
-const List = require('../models/List.model.js');
-const Job = require('../models/Jobs.model.js');
-const Board = require('../models/Board.model.js');
+const Roles = require('../models/Roles.model.js');
+const Lists = require('../models/Lists.model.js');
+const Jobs = require('../models/Jobs.model.js');
+const Boards = require('../models/Boards.model.js');
 const { isAuthenticated } = require('../middleware/jwt.middleware');
 
 const saltRounds = 10;
@@ -112,10 +112,10 @@ router.get('/users/:userId', async (req, res, next) => {
     }
 
     const user = await User.findById(userId)
-      .populate('job')
-      .populate('board')
-      .populate('role')
-      .populate('list');
+      .populate('jobs')
+      .populate('boards')
+      .populate('roles')
+      .populate('lists');
 
     if (!user) {
       return res.status(404).json({ message: 'No user was found' });
@@ -172,10 +172,10 @@ router.delete('/users/:userId', async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    await Role.deleteMany({ userId });
-    await Board.deleteMany({ userId });
-    await Job.deleteMany({ userId });
-    await List.deleteMany({ userId });
+    await Roles.deleteMany({ userId });
+    await Boards.deleteMany({ userId });
+    await Jobs.deleteMany({ userId });
+    await Lists.deleteMany({ userId });
 
     const deletedUser = await User.findByIdAndDelete(userId);
 
