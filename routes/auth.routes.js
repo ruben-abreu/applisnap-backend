@@ -142,7 +142,7 @@ router.put('/users/:userId', async (req, res, next) => {
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         message:
-          'Password must have at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.',
+          'Password must have at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number!',
       });
     }
 
