@@ -5,7 +5,6 @@ const Boards = require('../models/Boards.model');
 const Lists = require('../models/Lists.model');
 
 // POST
-
 router.post('/boards', async (req, res, next) => {
   const { boardName, listId, userId } = req.body;
   try {
@@ -15,17 +14,28 @@ router.post('/boards', async (req, res, next) => {
       userId,
     });
 
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.boards.push(newBoard._id);
+    await user.save();
+
     await Lists.findByIdAndUpdate(listId, {
-      $push: { board: newBoard },
+      $push: { boards: newBoard._id },
     });
 
     console.log('New Board', newBoard);
+    console.log('Updated User', user);
+
     return res.status(201).json(newBoard);
   } catch (error) {
     console.log('An error occurred creating the board', error);
     next(error);
   }
 });
+
 /* 
 // GET
 
