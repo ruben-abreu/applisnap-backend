@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const router = require('express').Router();
+const User = require('../models/User.model');
 const Boards = require('../models/Boards.model');
 const Lists = require('../models/Lists.model');
 
@@ -24,10 +25,19 @@ router.post('/lists', async (req, res, next) => {
       return res.status(404).json({ message: 'Invalid list name' });
     }
 
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     const board = await Boards.findById(boardId);
     if (!board) {
       return res.status(404).json({ message: 'Board not found' });
     }
+
+    await User.findByIdAndUpdate(userId, {
+      $push: { lists: newList },
+    });
 
     await Boards.findByIdAndUpdate(boardId, {
       $push: { lists: newList },

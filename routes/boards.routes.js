@@ -3,13 +3,16 @@ const router = require('express').Router();
 const User = require('../models/User.model');
 const Boards = require('../models/Boards.model');
 const Lists = require('../models/Lists.model');
+const Jobs = require('../models/Jobs.model');
+const Roles = require('../models/Roles.model');
 
 router.post('/boards', async (req, res, next) => {
-  const { boardName, userId } = req.body;
+  const { boardName, userId, lists } = req.body;
   try {
     const newBoard = await Boards.create({
       boardName,
       userId,
+      lists,
     });
 
     const user = await User.findById(userId);
@@ -62,7 +65,7 @@ router.get('/boards/:boardId', async (req, res, next) => {
 
 router.put('/boards/:boardId', async (req, res, next) => {
   const { boardId } = req.params;
-  const { boardName, userId } = req.body;
+  const { boardName, userId, lists } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(boardId)) {
@@ -73,6 +76,7 @@ router.put('/boards/:boardId', async (req, res, next) => {
       {
         boardName,
         userId,
+        lists,
       },
       { new: true }
     );
@@ -95,6 +99,8 @@ router.delete('/boards/:boardId', async (req, res, next) => {
     }
 
     await Lists.deleteMany({ boardId });
+    await Jobs.deleteMany({ boardId });
+    await Roles.deleteMany({ boardId });
 
     await Boards.findByIdAndDelete(boardId);
     res.json({ message: 'Board deleted successfully' });

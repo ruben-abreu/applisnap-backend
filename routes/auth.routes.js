@@ -122,9 +122,9 @@ router.get('/users/:userId', async (req, res, next) => {
       return res.status(404).json({ message: 'No user was found' });
     }
 
-    const { email, _id, boards } = user;
+    const { email, _id, boards, lists, jobs, roles } = user;
 
-    const responseData = { email, _id, boards };
+    const responseData = { email, _id, boards, lists, jobs, roles };
 
     res.json(responseData);
   } catch (error) {

@@ -119,6 +119,9 @@
   name: String,
   email: String,
   password: String,
-  boards: [{type: Schema.Types.ObjectId, ref: 'Board'}],
+  boards: [{ type: Schema.Types.ObjectId, ref: 'Boards' }],
+  lists: [{ type: Schema.Types.ObjectId, ref: 'Lists' }],
+  jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
+  roles: [{ type: Schema.Types.ObjectId, ref: 'Roles' }],
 }
 ```
