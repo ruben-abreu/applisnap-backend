@@ -1,16 +1,15 @@
-/* const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const router = require('express').Router();
-const Role = require('../models/Role.model');
-const List = require('../models/List.model');
 const User = require('../models/User.model');
-const Board = require('../models/Board.model');
-const Job = require('../models/Job.model');
-
-// POST
+const Boards = require('../models/Boards.model');
+const Lists = require('../models/Lists.model');
+const Jobs = require('../models/Jobs.model');
+const Roles = require('../models/Roles.model');
 
 router.post('/jobs', async (req, res, next) => {
   const {
     companyName,
+    roleName,
     logoURL,
     jobURL,
     jobDescription,
@@ -23,11 +22,11 @@ router.post('/jobs', async (req, res, next) => {
     userId,
     boardId,
     listId,
-    roleId,
   } = req.body;
   try {
-    const newJob = await Job.create({
+    const newJob = await Jobs.create({
       companyName,
+      roleName,
       logoURL,
       jobURL,
       jobDescription,
@@ -40,26 +39,46 @@ router.post('/jobs', async (req, res, next) => {
       userId,
       boardId,
       listId,
-      roleId,
     });
 
-    await List.findByIdAndUpdate(listId, {
-      $push: { job: newJob },
+    if (!companyName || !roleName) {
+      return res
+        .status(400)
+        .json({ message: 'Please fill all required fields' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const board = await Boards.findById(boardId);
+    if (!board) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    await User.findByIdAndUpdate(userId, {
+      $push: { jobs: newJob },
+    });
+
+    await Boards.findByIdAndUpdate(boardId, {
+      $push: { jobs: newJob },
     });
 
     console.log('New Job', newJob);
-    return res.status(201).json(newJob);
+    console.log('Updated User', user);
+    console.log('Updated Board', board);
+
+    res.status(201).json(newJob);
   } catch (error) {
     console.log('An error occurred creating the job', error);
     next(error);
   }
 });
 
-// GET
-
 router.get('/jobs', async (req, res, next) => {
   try {
-    const allJobs = await Job.find({});
+    const allJobs = await Jobs.find({});
     console.log('All Jobs', allJobs);
     res.status(200).json(allJobs);
   } catch (error) {
@@ -68,15 +87,13 @@ router.get('/jobs', async (req, res, next) => {
   }
 });
 
-// GET by ID
-
 router.get('/jobs/:jobId', async (req, res, next) => {
   const { jobId } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    const job = await Job.findById(jobId);
+    const job = await Jobs.findById(jobId);
 
     if (!job) {
       return res.status(404).json({ message: 'No job found' });
@@ -88,12 +105,11 @@ router.get('/jobs/:jobId', async (req, res, next) => {
   }
 });
 
-// PUT
-
 router.put('/jobs/:jobId', async (req, res, next) => {
   const { jobId } = req.params;
   const {
     companyName,
+    roleName,
     logoURL,
     jobURL,
     jobDescription,
@@ -106,17 +122,17 @@ router.put('/jobs/:jobId', async (req, res, next) => {
     userId,
     boardId,
     listId,
-    roleId,
   } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    const updatedJob = await Job.findByIdAndUpdate(
+    const updatedJob = await Jobs.findByIdAndUpdate(
       jobId,
       {
         companyName,
+        roleName,
         logoURL,
         jobURL,
         jobDescription,
@@ -129,7 +145,6 @@ router.put('/jobs/:jobId', async (req, res, next) => {
         userId,
         boardId,
         listId,
-        roleId,
       },
       { new: true }
     );
@@ -144,15 +159,14 @@ router.put('/jobs/:jobId', async (req, res, next) => {
   }
 });
 
-// Delete
-
 router.delete('/jobs/:jobId', async (req, res, next) => {
   const { jobId } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    await Project.findByIdAndDelete(jobId);
+
+    await Jobs.findByIdAndDelete(jobId);
     res.json({ message: 'Job deleted successfully' });
   } catch (error) {
     console.log('An error occurred deleting the job', error);
@@ -161,4 +175,3 @@ router.delete('/jobs/:jobId', async (req, res, next) => {
 });
 
 module.exports = router;
- */

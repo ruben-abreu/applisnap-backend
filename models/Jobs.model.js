@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const jobsSchema = new Schema({
   companyName: String,
+  roleName: String,
   logoURL: String,
   jobURL: String,
   jobDescription: String,

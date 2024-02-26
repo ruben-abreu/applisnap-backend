@@ -52,17 +52,18 @@
 
 ## Models
 
-### Board Model
+### Boards Model
 
 ```js
 {
   boardName: String,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   lists: [{type: Schema.Types.ObjectId, ref: 'List'}],
+  roles: [{ type: Schema.Types.ObjectId, ref: 'Roles' }],
 }
 ```
 
-### List Model
+### Lists Model
 
 ```js
 {
@@ -73,11 +74,12 @@
 }
 ```
 
-### Job Model
+### Jobs Model
 
 ```js
 {
   companyName: String,
+  roleName: String,
   logoURL: String,
   jobURL: String,
   jobDescription: String,
@@ -100,7 +102,7 @@
 }
 ```
 
-### Role Model
+### Roles Model
 
 ```js
 {

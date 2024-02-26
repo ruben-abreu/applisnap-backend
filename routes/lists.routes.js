@@ -44,6 +44,7 @@ router.post('/lists', async (req, res, next) => {
     });
 
     console.log('New List', newList);
+    console.log('Updated User', user);
     console.log('Updated Board', board);
 
     res.status(201).json(newList);
