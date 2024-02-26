@@ -61,7 +61,7 @@ router.get('/boards/:boardId', async (req, res, next) => {
 
 router.put('/boards/:boardId', async (req, res, next) => {
   const { boardId } = req.params;
-  const { boardName, userId, lists } = req.body;
+  const { boardName, userId } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(boardId)) {
@@ -72,7 +72,6 @@ router.put('/boards/:boardId', async (req, res, next) => {
       {
         boardName,
         userId,
-        lists,
       },
       { new: true }
     );

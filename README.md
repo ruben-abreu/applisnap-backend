@@ -68,7 +68,6 @@
 ```js
 {
   listName: ['Wishlist', 'Applied', 'Interviews', 'Offers', 'Rejected'],
-  userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
   jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
 }

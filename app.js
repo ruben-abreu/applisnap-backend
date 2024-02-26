@@ -19,8 +19,12 @@ const indexRoutes = require('./routes/index.routes');
 app.use('/api', indexRoutes);
 const authRouter = require('./routes/auth.routes');
 app.use('/auth', authRouter);
-const boardsRouter = require('./routes/board.routes');
+const boardsRouter = require('./routes/boards.routes');
 app.use('/api', boardsRouter);
+const listsRouter = require('./routes/lists.routes');
+app.use('/api', listsRouter);
+// const jobsRouter = require('./routes/jobs.routes');
+// app.use('/api', jobsRouter);
 
 /* const jobsRoutes = require('./routes/job.routes');
 app.use('/api', jobsRoutes); */
