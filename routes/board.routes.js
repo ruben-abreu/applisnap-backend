@@ -2,11 +2,10 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const User = require('../models/User.model');
 const Boards = require('../models/Boards.model');
-const Lists = require('../models/Lists.model');
 
 // POST
 router.post('/boards', async (req, res, next) => {
-  const { boardName, listId, userId } = req.body;
+  const { boardName, userId } = req.body;
   try {
     const newBoard = await Boards.create({
       boardName,
@@ -25,7 +24,7 @@ router.post('/boards', async (req, res, next) => {
     console.log('New Board', newBoard);
     console.log('Updated User', user);
 
-    return res.status(201).json(newBoard);
+    res.status(201).json(newBoard);
   } catch (error) {
     console.log('An error occurred creating the board', error);
     next(error);
