@@ -77,13 +77,17 @@ router.put('/roles/:roleId', async (req, res, next) => {
       return res.status(400).json({ message: 'Id is not valid' });
     }
 
-    const updatedRole = await Roles.create({
-      roleName,
-      userId,
-      boardId,
-      listId,
-      jobs: [],
-    });
+    const updatedRole = await Roles.findByIdAndUpdate(
+      roleId,
+      {
+        roleName,
+        userId,
+        boardId,
+        listId,
+        jobs: [],
+      },
+      { new: true }
+    );
 
     const jobs = await Jobs.find({ _id: { $in: jobId } });
 
