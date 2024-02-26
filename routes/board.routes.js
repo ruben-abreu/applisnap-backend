@@ -3,7 +3,6 @@ const router = require('express').Router();
 const User = require('../models/User.model');
 const Boards = require('../models/Boards.model');
 
-// POST
 router.post('/boards', async (req, res, next) => {
   const { boardName, userId } = req.body;
   try {
@@ -31,110 +30,75 @@ router.post('/boards', async (req, res, next) => {
   }
 });
 
-/* 
-// GET
-
-router.get('/jobs', async (req, res, next) => {
+router.get('/boards', async (req, res, next) => {
   try {
-    const allJobs = await Job.find({});
-    console.log('All Jobs', allJobs);
-    res.status(200).json(allJobs);
+    const allBoards = await Boards.find({});
+    console.log('All Boards', allBoards);
+    res.status(200).json(allBoards);
   } catch (error) {
     console.log('Error retrieving all jobs', error);
     next(error);
   }
 });
 
-// GET by ID
-
-router.get('/jobs/:jobId', async (req, res, next) => {
-  const { jobId } = req.params;
+router.get('/boards/:boardId', async (req, res, next) => {
+  const { boardId } = req.params;
   try {
-    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+    if (!mongoose.Types.ObjectId.isValid(boardId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    const job = await Job.findById(jobId);
+    const board = await Boards.findById(boardId);
 
-    if (!job) {
-      return res.status(404).json({ message: 'No job found' });
+    if (!board) {
+      return res.status(404).json({ message: 'No board found' });
     }
-    res.json(job);
+    res.json(board);
   } catch (error) {
-    console.log('An error ocurred getting the job', error);
+    console.log('An error ocurred getting the board', error);
     next(error);
   }
 });
 
-// PUT
-
-router.put('/jobs/:jobId', async (req, res, next) => {
-  const { jobId } = req.params;
-  const {
-    companyName,
-    logoURL,
-    jobURL,
-    jobDescription,
-    workModel,
-    workLocation,
-    notes,
-    customLabel,
-    date,
-    starred,
-    userId,
-    boardId,
-    listId,
-    roleId,
-  } = req.body;
+router.put('/boards/:boardId', async (req, res, next) => {
+  const { boardId } = req.params;
+  const { boardName, userId, lists } = req.body;
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+    if (!mongoose.Types.ObjectId.isValid(boardId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    const updatedJob = await Job.findByIdAndUpdate(
-      jobId,
+    const updatedBoard = await Boards.findByIdAndUpdate(
+      boardId,
       {
-        companyName,
-        logoURL,
-        jobURL,
-        jobDescription,
-        workModel,
-        workLocation,
-        notes,
-        customLabel,
-        date,
-        starred,
+        boardName,
         userId,
-        boardId,
-        listId,
-        roleId,
+        lists,
       },
       { new: true }
     );
 
-    if (!updatedJob) {
-      return res.status(404).json({ message: 'Job not found!' });
+    if (!updatedBoard) {
+      return res.status(404).json({ message: 'Board not found!' });
     }
-    res.json(updatedJob);
+    res.json(updatedBoard);
   } catch (error) {
-    console.log('An error occurred updating the job', error);
+    console.log('An error occurred updating the board', error);
     next(error);
   }
 });
 
-// Delete
-
-router.delete('/jobs/:jobId', async (req, res, next) => {
-  const { jobId } = req.params;
+router.delete('/boards/:boardId', async (req, res, next) => {
+  const { boardId } = req.params;
   try {
-    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+    if (!mongoose.Types.ObjectId.isValid(boardId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    await Project.findByIdAndDelete(jobId);
-    res.json({ message: 'Job deleted successfully' });
+    await Boards.findByIdAndDelete(boardId);
+    res.json({ message: 'Board deleted successfully' });
   } catch (error) {
-    console.log('An error occurred deleting the job', error);
+    console.log('An error occurred deleting the board', error);
     next(error);
   }
-}); */
+});
 
 module.exports = router;

@@ -5,7 +5,7 @@ const roleSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   boardId: { type: Schema.Types.ObjectId, ref: 'Boards' },
   listId: { type: Schema.Types.ObjectId, ref: 'Lists' },
-  jobId: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
+  jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
 });
 
 module.exports = model('Roles', roleSchema);

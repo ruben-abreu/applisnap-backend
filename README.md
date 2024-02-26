@@ -109,7 +109,7 @@
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
   listId: {type: Schema.Types.ObjectId, ref: 'List'},
-  jobId: [{type: Schema.Types.ObjectId, ref: 'Job'}],
+  jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
 }
 ```
 
