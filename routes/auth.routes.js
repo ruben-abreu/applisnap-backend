@@ -86,16 +86,31 @@ router.post('/login', async (req, res, next) => {
     const isPasswordCorrect = bcrypt.compareSync(password, user.password);
 
     if (isPasswordCorrect) {
-      const payload = { _id: user._id, email: user.email };
+      const payload = {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        boards: user.boards,
+        lists: user.lists,
+        jobs: user.jobs,
+        roles: user.roles,
+      };
 
       const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
         algorithm: 'HS256',
         expiresIn: '6h',
       });
 
-      res
-        .status(200)
-        .json({ authToken, userId: payload._id, email: payload.email });
+      res.status(200).json({
+        authToken,
+        userId: payload._id,
+        email: payload.email,
+        name: payload.name,
+        boards: payload.boards,
+        lists: payload.lists,
+        jobs: payload.jobs,
+        roles: payload.roles,
+      });
     } else {
       return res.status(401).json({ message: 'Unable to authenticate user' });
     }
