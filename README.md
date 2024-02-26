@@ -19,7 +19,6 @@
 | GET    | /api/lists         | Returns all lists       |
 | GET    | /api/lists/:listId | Returns a specific list |
 | POST   | /api/lists         | Adds a new list         |
-| DELETE | /api/lists/:listId | Deletes a list          |
 
 ### Job Routes
 
@@ -68,6 +67,7 @@
 ```js
 {
   listName: ['Wishlist', 'Applied', 'Interviews', 'Offers', 'Rejected'],
+  userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
   jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
 }
@@ -91,7 +91,7 @@
     interviews: [Date],
     offer: Date,
     rejected: Date,
-  },,
+  },
   starred: Boolean,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},

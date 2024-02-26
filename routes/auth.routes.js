@@ -173,10 +173,10 @@ router.delete('/users/:userId', async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    await Roles.deleteMany({ userId });
     await Boards.deleteMany({ userId });
-    await Jobs.deleteMany({ userId });
     await Lists.deleteMany({ userId });
+    await Jobs.deleteMany({ userId });
+    await Roles.deleteMany({ userId });
 
     const deletedUser = await User.findByIdAndDelete(userId);
 

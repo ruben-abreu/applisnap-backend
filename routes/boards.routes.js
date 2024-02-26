@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const User = require('../models/User.model');
 const Boards = require('../models/Boards.model');
+const Lists = require('../models/Lists.model');
 
 router.post('/boards', async (req, res, next) => {
   const { boardName, userId } = req.body;
@@ -92,6 +93,9 @@ router.delete('/boards/:boardId', async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(boardId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
+
+    await Lists.deleteMany({ boardId });
+
     await Boards.findByIdAndDelete(boardId);
     res.json({ message: 'Board deleted successfully' });
   } catch (error) {
