@@ -1,18 +1,24 @@
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const User = require('../models/User.model');
+const Jobs = require('../models/Jobs.model');
 const Roles = require('../models/Roles.model');
 
 router.post('/roles', async (req, res, next) => {
-  const { roleName, userId, boardId, listId, jobs } = req.body;
+  const { roleName, userId, boardId, listId, jobId } = req.body;
   try {
     const newRole = await Roles.create({
       roleName,
       userId,
       boardId,
       listId,
-      jobs,
+      jobs: [],
     });
+
+    const jobs = await Jobs.find({ _id: { $in: jobId } });
+
+    newRole.jobs.push(...jobs.map(job => job._id));
+    await newRole.save();
 
     const user = await User.findById(userId);
     if (!user) {
@@ -64,23 +70,27 @@ router.get('/roles/:roleId', async (req, res, next) => {
 
 router.put('/roles/:roleId', async (req, res, next) => {
   const { roleId } = req.params;
-  const { roleName, userId, boardId, listId, jobs } = req.body;
+  const { roleName, userId, boardId, listId, jobId } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(roleId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    const updatedRole = await Roles.findByIdAndUpdate(
-      roleId,
-      {
-        roleName,
-        userId,
-        boardId,
-        listId,
-        jobs,
-      },
-      { new: true }
-    );
+
+    const updatedRole = await Roles.create({
+      roleName,
+      userId,
+      boardId,
+      listId,
+      jobs: [],
+    });
+
+    const jobs = await Jobs.find({ _id: { $in: jobId } });
+
+    updatedRole.jobs.push(...jobs.map(job => job._id));
+    await updatedRole.save();
+
+    await Roles.findByIdAndUpdate(updatedRole, { new: true });
 
     if (!updatedRole) {
       return res.status(404).json({ message: 'Role not found!' });
