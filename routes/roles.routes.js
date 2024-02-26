@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const router = require('express').Router();
 const User = require('../models/User.model');
-const Boards = require('../models/Boards.model');
-const Lists = require('../models/Lists.model');
-const Jobs = require('../models/Jobs.model');
 const Roles = require('../models/Roles.model');
 
 router.post('/roles', async (req, res, next) => {
