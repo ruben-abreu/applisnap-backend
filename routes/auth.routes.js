@@ -57,6 +57,9 @@ router.post('/signup', async (req, res, next) => {
       name: newUser.name,
       _id: newUser._id,
       boards: newUser.boards,
+      lists: newUser.lists,
+      jobs: newUser.jobs,
+      roles: newUser.roles,
     });
   } catch (error) {
     console.log('Error creating the user', error);
