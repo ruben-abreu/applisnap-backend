@@ -59,7 +59,7 @@
 {
   boardName: String,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
-  listId: [{type: Schema.Types.ObjectId, ref: 'List'}],
+  lists: [{type: Schema.Types.ObjectId, ref: 'List'}],
 }
 ```
 
@@ -70,7 +70,7 @@
   listName: String,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
-  jobId: [{type: Schema.Types.ObjectId, ref: 'Job'}],
+  jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
 }
 ```
 
@@ -86,7 +86,13 @@
   workLocation: String,
   notes: String,
   customLabel: String,
-  date: Object,
+  date: {
+    created: Date,
+    applied: Date,
+    interviews: [Date],
+    offer: Date,
+    rejected: Date,
+  },,
   starred: Boolean,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
@@ -114,6 +120,6 @@
   name: String,
   email: String,
   password: String,
-  boardId: [{type: Schema.Types.ObjectId, ref: 'Board'}],
+  boards: [{type: Schema.Types.ObjectId, ref: 'Board'}],
 }
 ```

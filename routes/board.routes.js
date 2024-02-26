@@ -10,7 +10,6 @@ router.post('/boards', async (req, res, next) => {
   try {
     const newBoard = await Boards.create({
       boardName,
-      listId,
       userId,
     });
 
@@ -19,11 +18,8 @@ router.post('/boards', async (req, res, next) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.boards.push(newBoard._id);
-    await user.save();
-
-    await Lists.findByIdAndUpdate(listId, {
-      $push: { boards: newBoard._id },
+    await User.findByIdAndUpdate(userId, {
+      $push: { boards: newBoard },
     });
 
     console.log('New Board', newBoard);

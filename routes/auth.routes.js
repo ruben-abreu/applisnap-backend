@@ -52,7 +52,12 @@ router.post('/signup', async (req, res, next) => {
       password: hashedPassword,
     });
 
-    res.json({ email: newUser.email, name: newUser.name, _id: newUser._id });
+    res.json({
+      email: newUser.email,
+      name: newUser.name,
+      _id: newUser._id,
+      boards: newUser.boards,
+    });
   } catch (error) {
     console.log('Error creating the user', error);
     next(error);
@@ -111,19 +116,15 @@ router.get('/users/:userId', async (req, res, next) => {
       return res.status(400).json({ message: 'Id is not valid' });
     }
 
-    const user = await User.findById(userId)
-      .populate('jobs')
-      .populate('boards')
-      .populate('roles')
-      .populate('lists');
+    const user = await User.findById(userId).populate('boards');
 
     if (!user) {
       return res.status(404).json({ message: 'No user was found' });
     }
 
-    const { email, _id, visited, wishlist } = user;
+    const { email, _id, boards } = user;
 
-    const responseData = { email, _id, visited, wishlist };
+    const responseData = { email, _id, boards };
 
     res.json(responseData);
   } catch (error) {
