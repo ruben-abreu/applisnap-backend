@@ -12,12 +12,15 @@ router.post('/roles', async (req, res, next) => {
       userId,
       boardId,
       listId,
-      jobs: [],
+      jobId,
     });
 
-    const jobs = await Jobs.find({ _id: { $in: jobId } });
+    const job = await Jobs.find({ _id: { $in: jobId } });
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
 
-    newRole.jobs.push(...jobs.map(job => job._id));
+    newRole.jobs.push(...job.map(job => job._id));
     await newRole.save();
 
     const user = await User.findById(userId);
@@ -26,6 +29,10 @@ router.post('/roles', async (req, res, next) => {
     }
 
     await User.findByIdAndUpdate(userId, {
+      $push: { roles: newRole },
+    });
+
+    await Jobs.findByIdAndUpdate(jobId, {
       $push: { roles: newRole },
     });
 
@@ -84,14 +91,17 @@ router.put('/roles/:roleId', async (req, res, next) => {
         userId,
         boardId,
         listId,
-        jobs: [],
+        jobId,
       },
       { new: true }
     );
 
-    const jobs = await Jobs.find({ _id: { $in: jobId } });
+    const job = await Jobs.find({ _id: { $in: jobId } });
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
 
-    updatedRole.jobs.push(...jobs.map(job => job._id));
+    updatedRole.jobs.push(...job.map(job => job._id));
     await updatedRole.save();
 
     await Roles.findByIdAndUpdate(updatedRole, { new: true });
