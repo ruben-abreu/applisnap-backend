@@ -60,10 +60,11 @@ router.post('/signup', async (req, res, next) => {
     });
 
     res.json({
+      _id: newUser._id,
       email: newUser.email,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
-      _id: newUser._id,
+      imgURL: newUser.imgURL,
       boards: newUser.boards,
       lists: newUser.lists,
       jobs: newUser.jobs,
@@ -99,6 +100,7 @@ router.post('/login', async (req, res, next) => {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        imgURL: newUser.imgURL,
         boards: user.boards,
         lists: user.lists,
         jobs: user.jobs,
@@ -116,6 +118,7 @@ router.post('/login', async (req, res, next) => {
         email: payload.email,
         firstName: payload.firstName,
         lastName: payload.lastName,
+        imgURL: newUser.imgURL,
         boards: payload.boards,
         lists: payload.lists,
         jobs: payload.jobs,
@@ -157,12 +160,14 @@ router.get('/users/:userId', async (req, res, next) => {
       return res.status(404).json({ message: 'No user was found' });
     }
 
-    const { firstName, lastName, email, boards, lists, jobs, roles } = user;
+    const { firstName, lastName, email, imgURL, boards, lists, jobs, roles } =
+      user;
 
     const responseData = {
       firstName,
       lastName,
       email,
+      imgURL,
       boards,
       lists,
       jobs,
@@ -203,13 +208,14 @@ router.put('/users/:userId', async (req, res, next) => {
       { new: true }
     );
 
-    const { firstName, lastName, email, boards, lists, jobs, roles } =
+    const { firstName, lastName, email, imgURL, boards, lists, jobs, roles } =
       updatedUser;
 
     const responseData = {
       firstName,
       lastName,
       email,
+      imgURL,
       boards,
       lists,
       jobs,
