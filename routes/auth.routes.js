@@ -178,6 +178,7 @@ router.get('/users/:userId', async (req, res, next) => {
 router.put('/users/:userId', async (req, res, next) => {
   const { password } = req.body;
   const { userId } = req.params;
+  console.log(`password on the server: ${password}`);
 
   try {
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
@@ -185,7 +186,7 @@ router.put('/users/:userId', async (req, res, next) => {
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         message:
-          'Password must have at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number!',
+          'Password must have at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.',
       });
     }
 
