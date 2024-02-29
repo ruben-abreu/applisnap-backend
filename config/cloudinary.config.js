@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     allowed_formats: ['jpg', 'png', 'webp'],
-    folder: 'project-management', // name of the folder in cloudinary
+    folder: 'applisnap-profile-images',
   },
 });
 

@@ -182,49 +182,82 @@ router.get('/users/:userId', async (req, res, next) => {
 });
 
 router.put('/users/:userId', async (req, res, next) => {
-  const { password } = req.body;
+  const { password, imgURL } = req.body;
   const { userId } = req.params;
   console.log(`password on the server: ${password}`);
 
   try {
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+    if (password) {
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 
-    if (!passwordRegex.test(password)) {
-      return res.status(400).json({
-        message:
-          'Password must have at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.',
-      });
+      if (!passwordRegex.test(password)) {
+        return res.status(400).json({
+          message:
+            'Password must have at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.',
+        });
+      }
+
+      const salt = bcrypt.genSaltSync(saltRounds);
+
+      const hashedPassword = bcrypt.hashSync(password, salt);
+
+      const updatedPassword = await User.findByIdAndUpdate(
+        userId,
+        {
+          password: hashedPassword,
+        },
+        { new: true }
+      );
+
+      const { firstName, lastName, email, imgURL, boards, lists, jobs, roles } =
+        updatedPassword;
+
+      const responseData = {
+        firstName,
+        lastName,
+        email,
+        imgURL,
+        boards,
+        lists,
+        jobs,
+        roles,
+      };
+
+      res.json(responseData);
     }
 
-    const salt = bcrypt.genSaltSync(saltRounds);
+    if (imgURL) {
+      const updatedImage = await User.findByIdAndUpdate(
+        userId,
+        {
+          imgURL,
+        },
+        { new: true }
+      );
+      const { firstName, lastName, email, imgURL, boards, lists, jobs, roles } =
+        updatedImage;
 
-    const hashedPassword = bcrypt.hashSync(password, salt);
+      const responseData = {
+        firstName,
+        lastName,
+        email,
+        imgURL,
+        boards,
+        lists,
+        jobs,
+        roles,
+      };
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        password: hashedPassword,
-      },
-      { new: true }
-    );
-
-    const { firstName, lastName, email, imgURL, boards, lists, jobs, roles } =
-      updatedUser;
-
-    const responseData = {
-      firstName,
-      lastName,
-      email,
-      imgURL,
-      boards,
-      lists,
-      jobs,
-      roles,
-    };
-
-    res.json(responseData);
+      res.json(responseData);
+    }
   } catch (error) {
-    console.log('Error changing password', error);
+    if (password) {
+      console.log('Error changing password', error);
+    }
+    if (imgURL) {
+      console.log('Error uploading image', error);
+    }
     next(error);
   }
 });
