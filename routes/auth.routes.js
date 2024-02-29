@@ -8,6 +8,7 @@ const Lists = require('../models/Lists.model.js');
 const Jobs = require('../models/Jobs.model.js');
 const Boards = require('../models/Boards.model.js');
 const { isAuthenticated } = require('../middleware/jwt.middleware');
+const fileUploader = require('../config/cloudinary.config');
 
 const saltRounds = 10;
 
@@ -219,6 +220,15 @@ router.put('/users/:userId', async (req, res, next) => {
   } catch (error) {
     console.log('Error changing password', error);
     next(error);
+  }
+});
+
+router.post('/upload', fileUploader.single('file'), (req, res) => {
+  try {
+    res.status(200).json({ imgURL: req.file.path });
+  } catch (error) {
+    console.log('Error uploading the image', error);
+    res.status(500).json({ message: 'An error occurred uploading the image' });
   }
 });
 

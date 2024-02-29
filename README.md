@@ -45,6 +45,7 @@
 | ------ | ------------------- | -------------------- |
 | POST   | /auth/signup        | Creates a new user   |
 | POST   | /auth/login         | Logs the user        |
+| POST   | /auth/upload        | Upload user photo    |
 | GET    | /auth/verify        | Verifies the JWT     |
 | GET    | /auth/users/:userId | Get user details     |
 | PUT    | /auth/users/:userId | Change user password |
@@ -122,6 +123,7 @@
   lastName: String,
   email: String,
   password: String,
+  imgURL: String,
   boards: [{ type: Schema.Types.ObjectId, ref: 'Boards' }],
   lists: [{ type: Schema.Types.ObjectId, ref: 'Lists' }],
   jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
