@@ -130,9 +130,12 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/verify', isAuthenticated, (req, res, next) => {
-  console.log('req.payload', req.payload);
-
-  res.json(req.payload);
+  try {
+    console.log('req.payload', req.payload);
+    res.json(req.payload);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get('/users/:userId', async (req, res, next) => {
@@ -143,15 +146,27 @@ router.get('/users/:userId', async (req, res, next) => {
       return res.status(400).json({ message: 'Id is not valid' });
     }
 
-    const user = await User.findById(userId).populate('boards');
+    const user = await User.findById(userId)
+      .populate('boards')
+      .populate('lists')
+      .populate('jobs')
+      .populate('roles');
 
     if (!user) {
       return res.status(404).json({ message: 'No user was found' });
     }
 
-    const { email, _id, boards, lists, jobs, roles } = user;
+    const { firstName, lastName, email, boards, lists, jobs, roles } = user;
 
-    const responseData = { email, _id, boards, lists, jobs, roles };
+    const responseData = {
+      firstName,
+      lastName,
+      email,
+      boards,
+      lists,
+      jobs,
+      roles,
+    };
 
     res.json(responseData);
   } catch (error) {
@@ -161,7 +176,7 @@ router.get('/users/:userId', async (req, res, next) => {
 });
 
 router.put('/users/:userId', async (req, res, next) => {
-  const { email, password, firstName, lastName } = req.body;
+  const { password } = req.body;
   const { userId } = req.params;
 
   try {
@@ -181,18 +196,27 @@ router.put('/users/:userId', async (req, res, next) => {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
-        email,
         password: hashedPassword,
-        firstName,
-        lastName,
       },
       { new: true }
     );
 
-    console.log('Updated User', updatedUser);
-    res.json(updatedUser);
+    const { firstName, lastName, email, boards, lists, jobs, roles } =
+      updatedUser;
+
+    const responseData = {
+      firstName,
+      lastName,
+      email,
+      boards,
+      lists,
+      jobs,
+      roles,
+    };
+
+    res.json(responseData);
   } catch (error) {
-    console.log('Error creating the user', error);
+    console.log('Error changing password', error);
     next(error);
   }
 });
