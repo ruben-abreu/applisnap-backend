@@ -12,10 +12,15 @@ const { isAuthenticated } = require('../middleware/jwt.middleware');
 const saltRounds = 10;
 
 router.post('/signup', async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
-    if (name === '' || email === '' || password === '') {
+    if (
+      firstName === '' ||
+      lastName === '' ||
+      email === '' ||
+      password === ''
+    ) {
       return res.status(400).json({ message: 'All fields are mandatory' });
     }
 
@@ -47,14 +52,16 @@ router.post('/signup', async (req, res, next) => {
     const hashedPassword = bcrypt.hashSync(password, salt);
 
     const newUser = await User.create({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
     });
 
     res.json({
       email: newUser.email,
-      name: newUser.name,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
       _id: newUser._id,
       boards: newUser.boards,
       lists: newUser.lists,
@@ -89,7 +96,8 @@ router.post('/login', async (req, res, next) => {
       const payload = {
         _id: user._id,
         email: user.email,
-        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         boards: user.boards,
         lists: user.lists,
         jobs: user.jobs,
@@ -105,7 +113,8 @@ router.post('/login', async (req, res, next) => {
         authToken,
         userId: payload._id,
         email: payload.email,
-        name: payload.name,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
         boards: payload.boards,
         lists: payload.lists,
         jobs: payload.jobs,
@@ -152,7 +161,7 @@ router.get('/users/:userId', async (req, res, next) => {
 });
 
 router.put('/users/:userId', async (req, res, next) => {
-  const { email, password, name } = req.body;
+  const { email, password, firstName, lastName } = req.body;
   const { userId } = req.params;
 
   try {
@@ -174,7 +183,8 @@ router.put('/users/:userId', async (req, res, next) => {
       {
         email,
         password: hashedPassword,
-        name,
+        firstName,
+        lastName,
       },
       { new: true }
     );
