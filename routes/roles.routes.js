@@ -52,7 +52,7 @@ router.get('/roles', async (req, res, next) => {
     console.log('All Roles', allRoles);
     res.status(200).json(allRoles);
   } catch (error) {
-    console.log('Error retrieving all jobs', error);
+    console.log('Error retrieving all roles', error);
     next(error);
   }
 });
@@ -81,7 +81,7 @@ router.put('/roles/:roleId', async (req, res, next) => {
 
   try {
     if (!mongoose.Types.ObjectId.isValid(roleId)) {
-      return res.status(400).json({ message: 'Id is not valid' });
+      return res.status(400).json({ message: 'Role is not valid' });
     }
 
     const updatedRole = await Roles.findByIdAndUpdate(
@@ -98,7 +98,7 @@ router.put('/roles/:roleId', async (req, res, next) => {
 
     const job = await Jobs.find({ _id: { $in: jobId } });
     if (!job) {
-      return res.status(404).json({ message: 'Job not found' });
+      return res.status(404).json({ message: 'Role not found' });
     }
 
     updatedRole.jobs.push(...job.map(job => job._id));
