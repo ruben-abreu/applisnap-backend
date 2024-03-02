@@ -57,6 +57,7 @@ router.post('/signup', async (req, res, next) => {
       lastName,
       email,
       password: hashedPassword,
+      imgURL: '',
     });
 
     res.json({
