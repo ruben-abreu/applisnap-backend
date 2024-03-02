@@ -8,7 +8,10 @@ const Lists = require('../models/Lists.model.js');
 const Jobs = require('../models/Jobs.model.js');
 const Boards = require('../models/Boards.model.js');
 const { isAuthenticated } = require('../middleware/jwt.middleware');
-const fileUploader = require('../config/cloudinary.config');
+const {
+  fileUploader,
+  cloudinaryConfig,
+} = require('../config/cloudinary.config');
 
 const saltRounds = 10;
 
@@ -315,11 +318,11 @@ router.post('/upload', fileUploader.single('file'), (req, res) => {
   }
 });
 
-router.delete('/deleteImage/:imgPublicId', async (req, res, next) => {
-  const { imgPublicId } = req.params;
+router.delete('/deleteImage', async (req, res, next) => {
+  const { imgPublicId } = req.body;
 
   try {
-    await fileUploader.destroy(imgPublicId);
+    await cloudinaryConfig.destroy(imgPublicId);
 
     res.json({ message: 'Image deleted successfully' });
   } catch (error) {
