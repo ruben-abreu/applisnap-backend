@@ -16,7 +16,6 @@ const userSchema = new Schema(
       required: [true, 'Password is required.'],
     },
     imgURL: { type: String, default: '' },
-    imgPublicId: { type: String, default: '' },
     boards: [{ type: Schema.Types.ObjectId, ref: 'Boards' }],
     lists: [{ type: Schema.Types.ObjectId, ref: 'Lists' }],
     jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
