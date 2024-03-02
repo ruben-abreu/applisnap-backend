@@ -65,6 +65,7 @@ router.post('/signup', async (req, res, next) => {
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       imgURL: newUser.imgURL,
+      imgPublicId: newUser.imgPublicId,
       boards: newUser.boards,
       lists: newUser.lists,
       jobs: newUser.jobs,
@@ -101,6 +102,7 @@ router.post('/login', async (req, res, next) => {
         firstName: user.firstName,
         lastName: user.lastName,
         imgURL: user.imgURL,
+        imgPublicId: user.imgPublicId,
         boards: user.boards,
         lists: user.lists,
         jobs: user.jobs,
@@ -119,6 +121,7 @@ router.post('/login', async (req, res, next) => {
         firstName: payload.firstName,
         lastName: payload.lastName,
         imgURL: payload.imgURL,
+        imgPublicId: payload.imgPublicId,
         boards: payload.boards,
         lists: payload.lists,
         jobs: payload.jobs,
@@ -160,14 +163,24 @@ router.get('/users/:userId', async (req, res, next) => {
       return res.status(404).json({ message: 'No user was found' });
     }
 
-    const { firstName, lastName, email, imgURL, boards, lists, jobs, roles } =
-      user;
+    const {
+      firstName,
+      lastName,
+      email,
+      imgURL,
+      imgPublicId,
+      boards,
+      lists,
+      jobs,
+      roles,
+    } = user;
 
     const responseData = {
       firstName,
       lastName,
       email,
       imgURL,
+      imgPublicId,
       boards,
       lists,
       jobs,
@@ -210,14 +223,24 @@ router.put('/users/:userId', async (req, res, next) => {
         { new: true }
       );
 
-      const { firstName, lastName, email, imgURL, boards, lists, jobs, roles } =
-        updatedPassword;
+      const {
+        firstName,
+        lastName,
+        email,
+        imgURL,
+        imgPublicId,
+        boards,
+        lists,
+        jobs,
+        roles,
+      } = updatedPassword;
 
       const responseData = {
         firstName,
         lastName,
         email,
         imgURL,
+        imgPublicId,
         boards,
         lists,
         jobs,
@@ -232,17 +255,28 @@ router.put('/users/:userId', async (req, res, next) => {
         userId,
         {
           imgURL: req.body.imgURL,
+          imgPublicId: req.body.imgPublicId,
         },
         { new: true }
       );
-      const { firstName, lastName, email, imgURL, boards, lists, jobs, roles } =
-        updatedImage;
+      const {
+        firstName,
+        lastName,
+        email,
+        imgURL,
+        imgPublicId,
+        boards,
+        lists,
+        jobs,
+        roles,
+      } = updatedImage;
 
       const responseData = {
         firstName,
         lastName,
         email,
         imgURL,
+        imgPublicId,
         boards,
         lists,
         jobs,
@@ -264,10 +298,33 @@ router.put('/users/:userId', async (req, res, next) => {
 
 router.post('/upload', fileUploader.single('file'), (req, res) => {
   try {
-    res.status(200).json({ imgURL: req.file.path });
+    const imgURL = req.file && req.file.path;
+
+    if (!imgURL) {
+      throw new Error('Image upload failed');
+    }
+
+    const imgPublicId = `applisnap-profile-images/${
+      imgURL.split('/').pop().split('.')[0]
+    }`;
+
+    res.status(200).json({ imgURL, imgPublicId });
   } catch (error) {
     console.log('Error uploading the image', error);
     res.status(500).json({ message: 'An error occurred uploading the image' });
+  }
+});
+
+router.delete('/deleteImage/:imgPublicId', async (req, res, next) => {
+  const { imgPublicId } = req.params;
+
+  try {
+    await fileUploader.destroy(imgPublicId);
+
+    res.json({ message: 'Image deleted successfully' });
+  } catch (error) {
+    console.log('Error deleting image', error);
+    next(error);
   }
 });
 
