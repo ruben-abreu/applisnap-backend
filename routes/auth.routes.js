@@ -57,7 +57,6 @@ router.post('/signup', async (req, res, next) => {
       lastName,
       email,
       password: hashedPassword,
-      imgURL: '',
     });
 
     res.json({
@@ -183,7 +182,7 @@ router.get('/users/:userId', async (req, res, next) => {
 });
 
 router.put('/users/:userId', async (req, res, next) => {
-  const { password, imgURL } = req.body;
+  const { password } = req.body;
   const { userId } = req.params;
   console.log(`password on the server: ${password}`);
 
@@ -225,14 +224,14 @@ router.put('/users/:userId', async (req, res, next) => {
         roles,
       };
 
-      res.json(responseData);
+      return res.json(responseData);
     }
 
-    if (imgURL) {
+    if (req.body.imgURL) {
       const updatedImage = await User.findByIdAndUpdate(
         userId,
         {
-          imgURL,
+          imgURL: req.body.imgURL,
         },
         { new: true }
       );
@@ -256,7 +255,7 @@ router.put('/users/:userId', async (req, res, next) => {
     if (password) {
       console.log('Error changing password', error);
     }
-    if (imgURL) {
+    if (req.body.imgURL) {
       console.log('Error uploading image', error);
     }
     next(error);
