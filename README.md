@@ -49,6 +49,8 @@
 | GET    | /auth/verify                    | Verifies the JWT    |
 | GET    | /auth/users/:userId             | Get user details    |
 | PUT    | /auth/users/:userId             | Change user details |
+| PUT    | /auth/forgot-password           | Forgot Password     |
+| PUT    | /auth/reset-password            | Reset Password      |
 | DELETE | /auth/users/:userId             | Delete user account |
 | DELETE | /auth//deleteImage/:imgPublicId | Delete image        |
 

@@ -15,6 +15,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Password is required.'],
     },
+    resetLink: { type: String, default: '' },
     imgURL: { type: String, default: '' },
     imgPublicId: { type: String, default: '' },
     boards: [{ type: Schema.Types.ObjectId, ref: 'Boards' }],
