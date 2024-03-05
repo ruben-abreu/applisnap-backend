@@ -132,7 +132,9 @@ router.post('/login', async (req, res, next) => {
         roles: payload.roles,
       });
     } else {
-      return res.status(401).json({ message: 'Unable to authenticate user' });
+      return res.status(401).json({
+        message: 'Unable to authenticate user, password is not correct.',
+      });
     }
   } catch (error) {
     console.log('An error occurred login in the user', error);
@@ -330,6 +332,10 @@ router.put('/forgot-password', async (req, res, next) => {
       });
 
       const data = {
+        from: {
+          name: 'AppliSnap',
+          address: process.env.GOOGLE_APP_EMAIL,
+        },
         to: email,
         subject: 'Reset Account Password Link',
         html: `
@@ -360,22 +366,35 @@ router.put('/forgot-password', async (req, res, next) => {
 
 router.put('/reset-password', async (req, res, next) => {
   const { token, password } = req.body;
-
+  console.log('Received Token:', token);
   try {
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
     const user = await User.findOne({ resetLink: token });
 
-    if (!user) {
-      return res
-        .status(400)
-        .json({ error: 'User with this token does not exist' });
+    if (!user || !decodedToken) {
+      return res.status(400).json({ error: 'Invalid or expired token' });
     }
 
-    user.password = password;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message:
+          'Password must have at least 8 characters, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.',
+      });
+    }
+
+    const salt = bcrypt.genSaltSync(saltRounds);
+
+    const hashedPassword = bcrypt.hashSync(password, salt);
+
+    user.password = hashedPassword;
+    user.resetLink = undefined;
     await user.save();
 
     return res.status(200).json({ message: 'Your password has been changed' });
   } catch (error) {
-    next(error);
+    console.error(error);
     return res.status(400).json({ error: 'Reset Password Error' });
   }
 });
