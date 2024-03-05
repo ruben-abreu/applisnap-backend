@@ -418,7 +418,7 @@ router.post('/upload', fileUploader.single('file'), (req, res) => {
   }
 });
 
-router.delete('/deleteImage', async (req, res, next) => {
+router.delete('/deleteImage', async (req, res) => {
   const { imgPublicId } = req.body;
 
   try {
@@ -427,11 +427,11 @@ router.delete('/deleteImage', async (req, res, next) => {
     res.json({ message: 'Image deleted successfully' });
   } catch (error) {
     console.log('Error deleting image', error);
-    next(error);
+    res.status(500).json({ message: 'An error occurred deleting the image' });
   }
 });
 
-router.delete('/users/:userId', async (req, res, next) => {
+router.delete('/users/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -449,7 +449,9 @@ router.delete('/users/:userId', async (req, res, next) => {
     res.json({ message: 'User account deleted' });
   } catch (error) {
     console.log('Error deleting user account', error);
-    next(error);
+    res
+      .status(500)
+      .json({ message: 'An error occurred deleting your account' });
   }
 });
 
