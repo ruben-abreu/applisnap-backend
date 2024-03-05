@@ -21,7 +21,15 @@ router.post('/jobs', async (req, res, next) => {
     boardId,
     listId,
   } = req.body;
+
   try {
+    console.log('Incoming userId:', userId);
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     const newJob = await Jobs.create({
       companyName,
       roleName,
@@ -39,37 +47,24 @@ router.post('/jobs', async (req, res, next) => {
       listId,
     });
 
-    if (!companyName || !roleName) {
-      return res
-        .status(400)
-        .json({ message: 'Please fill all required fields' });
-    }
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
     const board = await Boards.findById(boardId);
-    if (!board) {
-      return res.status(404).json({ message: 'User not found' });
+    if (board) {
+      await Boards.findByIdAndUpdate(boardId, {
+        $push: { jobs: newJob },
+      });
     }
 
     await User.findByIdAndUpdate(userId, {
       $push: { jobs: newJob },
     });
 
-    await Boards.findByIdAndUpdate(boardId, {
-      $push: { jobs: newJob },
-    });
-
-    console.log('New Job', newJob);
-    console.log('Updated User', user);
-    console.log('Updated Board', board);
+    console.log('New Job:', newJob);
+    console.log('Updated User:', user);
+    console.log('Updated Board:', board);
 
     res.status(201).json(newJob);
   } catch (error) {
-    console.log('An error occurred creating the job', error);
+    console.log('An error occurred:', error);
     next(error);
   }
 });
