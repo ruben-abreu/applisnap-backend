@@ -133,3 +133,23 @@
   roles: [{ type: Schema.Types.ObjectId, ref: 'Roles' }],
 }
 ```
+
+## Packages
+
+[bcryptjs](https://www.npmjs.com/package/bcryptjs)
+
+[cloudinary](https://www.npmjs.com/package/cloudinary)
+
+[cookie-parser](https://www.npmjs.com/package/cookie-parser)
+
+[cors](https://www.npmjs.com/package/cors)
+
+[jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+
+[mongoose](https://www.npmjs.com/package/mongoose)
+
+[morgan](https://www.npmjs.com/package/morgan)
+
+[multer](https://www.npmjs.com/package/multer)
+
+[nodemailer](https://www.npmjs.com/package/nodemailer)
