@@ -6,7 +6,7 @@ const jobsSchema = new Schema({
   logoURL: String,
   jobURL: String,
   jobDescription: String,
-  workModel: String,
+  workModel: { type: String, enum: ['On-Site', 'Remote', 'Hybrid'] },
   workLocation: String,
   notes: String,
   customLabel: String,
