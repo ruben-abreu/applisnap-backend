@@ -8,7 +8,7 @@ router.post('/jobs', async (req, res, next) => {
   const {
     companyName,
     roleName,
-    logoURL,
+    domain,
     jobURL,
     jobDescription,
     workModel,
@@ -33,7 +33,7 @@ router.post('/jobs', async (req, res, next) => {
     const newJob = await Jobs.create({
       companyName,
       roleName,
-      logoURL,
+      domain,
       jobURL,
       jobDescription,
       workModel,
@@ -103,7 +103,7 @@ router.put('/jobs/:jobId', async (req, res, next) => {
   const {
     companyName,
     roleName,
-    logoURL,
+    domain,
     jobURL,
     jobDescription,
     workModel,
@@ -126,7 +126,7 @@ router.put('/jobs/:jobId', async (req, res, next) => {
       {
         companyName,
         roleName,
-        logoURL,
+        domain,
         jobURL,
         jobDescription,
         workModel,
