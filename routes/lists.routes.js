@@ -36,11 +36,11 @@ router.post('/lists', async (req, res, next) => {
     }
 
     await User.findByIdAndUpdate(userId, {
-      $push: { lists: newList },
+      $push: { lists: newList._id },
     });
 
     await Boards.findByIdAndUpdate(boardId, {
-      $push: { lists: newList },
+      $push: { lists: newList._id },
     });
 
     console.log('New List', newList);
@@ -60,7 +60,7 @@ router.get('/lists', async (req, res, next) => {
     console.log('All Lists', allLists);
     res.status(200).json(allLists);
   } catch (error) {
-    console.log('Error retrieving all jobs', error);
+    console.log('Error retrieving all lists', error);
     next(error);
   }
 });
@@ -78,7 +78,32 @@ router.get('/lists/:listId', async (req, res, next) => {
     }
     res.json(list);
   } catch (error) {
-    console.log('An error ocurred getting the list', error);
+    console.log('An error occurred getting the list', error);
+    next(error);
+  }
+});
+
+router.put('/lists/:listId', async (req, res, next) => {
+  const { listId } = req.params;
+  const { listName, userId, boardId } = req.body;
+  try {
+    if (!mongoose.Types.ObjectId.isValid(listId)) {
+      return res.status(400).json({ message: 'Id is not valid' });
+    }
+
+    const updatedList = await Lists.findByIdAndUpdate(
+      listId,
+      { listName, userId, boardId },
+      { new: true }
+    );
+
+    if (!updatedList) {
+      return res.status(404).json({ message: 'List not found' });
+    }
+
+    res.status(200).json(updatedList);
+  } catch (error) {
+    console.error('An error occurred updating the list', error);
     next(error);
   }
 });
