@@ -14,11 +14,12 @@
 
 ### List Routes
 
-| Method | Route              | Description             |
-| ------ | ------------------ | ----------------------- |
-| GET    | /api/lists         | Returns all lists       |
-| GET    | /api/lists/:listId | Returns a specific list |
-| POST   | /api/lists         | Adds a new list         |
+| Method | Route              | Description              |
+| ------ | ------------------ | ------------------------ |
+| GET    | /api/lists         | Returns all lists        |
+| GET    | /api/lists/:listId | Returns a specific list  |
+| POST   | /api/lists         | Adds a new list          |
+| PUT    | /api/lists/:listId | Edits the specified list |
 
 ### Job Routes
 
@@ -32,12 +33,13 @@
 
 ### Role Routes
 
-| Method | Route              | Description             |
-| ------ | ------------------ | ----------------------- |
-| GET    | /api/roles         | Returns all roles       |
-| GET    | /api/roles/:roleId | Returns a specific role |
-| POST   | /api/roles         | Adds a new role         |
-| DELETE | /api/roles/:roleId | Deletes a role          |
+| Method | Route              | Description              |
+| ------ | ------------------ | ------------------------ |
+| GET    | /api/roles         | Returns all roles        |
+| GET    | /api/roles/:roleId | Returns a specific role  |
+| POST   | /api/roles         | Adds a new role          |
+| PUT    | /api/roles/:roleId | Edits the specified role |
+| DELETE | /api/roles/:roleId | Deletes a role           |
 
 ### Auth Routes
 
