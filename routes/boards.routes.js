@@ -37,7 +37,10 @@ router.post('/boards', async (req, res, next) => {
 
 router.get('/boards', async (req, res, next) => {
   try {
-    const allBoards = await Boards.find({});
+    const allBoards = await Boards.find({})
+      .populate('lists')
+      .populate('jobs')
+      .populate('roles');
     console.log('All Boards', allBoards);
     res.status(200).json(allBoards);
   } catch (error) {
@@ -52,7 +55,10 @@ router.get('/boards/:boardId', async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(boardId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    const board = await Boards.findById(boardId);
+    const board = await Boards.findById(boardId)
+      .populate('lists')
+      .populate('jobs')
+      .populate('roles');
 
     if (!board) {
       return res.status(404).json({ message: 'No board found' });
