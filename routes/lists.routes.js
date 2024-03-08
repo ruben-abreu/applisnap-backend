@@ -71,7 +71,9 @@ router.get('/lists/:listId', async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(listId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    const list = await Lists.findById(listId);
+    const list = await Lists.findById(listId)
+      .populate('jobs')
+      .populate('roles');
 
     if (!list) {
       return res.status(404).json({ message: 'No list found' });

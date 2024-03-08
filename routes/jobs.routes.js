@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const User = require('../models/User.model');
 const Boards = require('../models/Boards.model');
+const Lists = require('../models/Lists.model');
 const Jobs = require('../models/Jobs.model');
 
 router.post('/jobs', async (req, res, next) => {
@@ -48,11 +49,15 @@ router.post('/jobs', async (req, res, next) => {
     });
 
     const board = await Boards.findById(boardId);
-    if (board) {
-      await Boards.findByIdAndUpdate(boardId, {
-        $push: { jobs: newJob },
-      });
-    }
+    const list = await Boards.findById(listId);
+
+    await Boards.findByIdAndUpdate(boardId, {
+      $push: { jobs: newJob },
+    });
+
+    await Lists.findByIdAndUpdate(listId, {
+      $push: { jobs: newJob },
+    });
 
     await User.findByIdAndUpdate(userId, {
       $push: { jobs: newJob },
@@ -61,6 +66,7 @@ router.post('/jobs', async (req, res, next) => {
     console.log('New Job:', newJob);
     console.log('Updated User:', user);
     console.log('Updated Board:', board);
+    console.log('Updated List:', list);
 
     res.status(201).json(newJob);
   } catch (error) {
