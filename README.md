@@ -31,16 +31,6 @@
 | PUT    | /api/jobs/:jobId | Edits the specified project |
 | DELETE | /api/jobs/:jobId | Deletes a job               |
 
-### Role Routes
-
-| Method | Route              | Description              |
-| ------ | ------------------ | ------------------------ |
-| GET    | /api/roles         | Returns all roles        |
-| GET    | /api/roles/:roleId | Returns a specific role  |
-| POST   | /api/roles         | Adds a new role          |
-| PUT    | /api/roles/:roleId | Edits the specified role |
-| DELETE | /api/roles/:roleId | Deletes a role           |
-
 ### Auth Routes
 
 | Method | Route                           | Description         |
@@ -65,7 +55,6 @@
   boardName: String,
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   lists: [{type: Schema.Types.ObjectId, ref: 'List'}],
-  roles: [{ type: Schema.Types.ObjectId, ref: 'Roles' }],
 }
 ```
 
@@ -104,19 +93,6 @@
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
   boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
   listId: {type: Schema.Types.ObjectId, ref: 'List'},
-  roleId: {type: Schema.Types.ObjectId, ref: 'Role'},
-}
-```
-
-### Roles Model
-
-```js
-{
-  roleName: String,
-  userId: {type: Schema.Types.ObjectId, ref: 'User'},
-  boardId: {type: Schema.Types.ObjectId, ref: 'Board'},
-  listId: {type: Schema.Types.ObjectId, ref: 'List'},
-  jobs: [{type: Schema.Types.ObjectId, ref: 'Job'}],
 }
 ```
 
@@ -134,7 +110,6 @@
   boards: [{ type: Schema.Types.ObjectId, ref: 'Boards' }],
   lists: [{ type: Schema.Types.ObjectId, ref: 'Lists' }],
   jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
-  roles: [{ type: Schema.Types.ObjectId, ref: 'Roles' }],
 }
 ```
 

@@ -25,8 +25,6 @@ const listsRouter = require('./routes/lists.routes');
 app.use('/api', listsRouter);
 const jobsRouter = require('./routes/jobs.routes');
 app.use('/api', jobsRouter);
-const rolesRouter = require('./routes/roles.routes');
-app.use('/api', rolesRouter);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);

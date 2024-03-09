@@ -21,7 +21,6 @@ const userSchema = new Schema(
     boards: [{ type: Schema.Types.ObjectId, ref: 'Boards' }],
     lists: [{ type: Schema.Types.ObjectId, ref: 'Lists' }],
     jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
-    roles: [{ type: Schema.Types.ObjectId, ref: 'Roles' }],
   },
   {
     timestamps: true,

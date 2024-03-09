@@ -56,7 +56,7 @@ router.post('/lists', async (req, res, next) => {
 
 router.get('/lists', async (req, res, next) => {
   try {
-    const allLists = await Lists.find({}).populate('jobs').populate('roles');
+    const allLists = await Lists.find({}).populate('jobs');
     console.log('All Lists', allLists);
     res.status(200).json(allLists);
   } catch (error) {
@@ -71,9 +71,7 @@ router.get('/lists/:listId', async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(listId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
-    const list = await Lists.findById(listId)
-      .populate('jobs')
-      .populate('roles');
+    const list = await Lists.findById(listId).populate('jobs');
 
     if (!list) {
       return res.status(404).json({ message: 'No list found' });

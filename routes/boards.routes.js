@@ -4,7 +4,6 @@ const User = require('../models/User.model');
 const Boards = require('../models/Boards.model');
 const Lists = require('../models/Lists.model');
 const Jobs = require('../models/Jobs.model');
-const Roles = require('../models/Roles.model');
 
 router.post('/boards', async (req, res, next) => {
   const { boardName, userId, lists, roleName } = req.body;
@@ -37,10 +36,8 @@ router.post('/boards', async (req, res, next) => {
 
 router.get('/boards', async (req, res, next) => {
   try {
-    const allBoards = await Boards.find({})
-      .populate('lists')
-      .populate('jobs')
-      .populate('roles');
+    const allBoards = await Boards.find({}).populate('lists').populate('jobs');
+
     console.log('All Boards', allBoards);
     res.status(200).json(allBoards);
   } catch (error) {
@@ -57,8 +54,7 @@ router.get('/boards/:boardId', async (req, res, next) => {
     }
     const board = await Boards.findById(boardId)
       .populate('lists')
-      .populate('jobs')
-      .populate('roles');
+      .populate('jobs');
 
     if (!board) {
       return res.status(404).json({ message: 'No board found' });
@@ -108,7 +104,6 @@ router.delete('/boards/:boardId', async (req, res, next) => {
 
     await Lists.deleteMany({ boardId });
     await Jobs.deleteMany({ boardId });
-    await Roles.deleteMany({ boardId });
 
     await Boards.findByIdAndDelete(boardId);
     res.json({ message: 'Board deleted successfully' });

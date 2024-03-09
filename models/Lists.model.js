@@ -9,7 +9,6 @@ const listSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'Users' },
   boardId: { type: Schema.Types.ObjectId, ref: 'Boards' },
   jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
-  roles: [{ type: Schema.Types.ObjectId, ref: 'Roles' }],
 });
 
 module.exports = model('Lists', listSchema);

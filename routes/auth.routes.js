@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
-const Roles = require('../models/Roles.model.js');
 const Lists = require('../models/Lists.model.js');
 const Jobs = require('../models/Jobs.model.js');
 const Boards = require('../models/Boards.model.js');
@@ -73,7 +72,6 @@ router.post('/signup', async (req, res, next) => {
       boards: newUser.boards,
       lists: newUser.lists,
       jobs: newUser.jobs,
-      roles: newUser.roles,
     });
   } catch (error) {
     console.log('Error creating the user', error);
@@ -110,7 +108,6 @@ router.post('/login', async (req, res, next) => {
         boards: user.boards,
         lists: user.lists,
         jobs: user.jobs,
-        roles: user.roles,
       };
 
       const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
@@ -129,7 +126,6 @@ router.post('/login', async (req, res, next) => {
         boards: payload.boards,
         lists: payload.lists,
         jobs: payload.jobs,
-        roles: payload.roles,
       });
     } else {
       return res.status(401).json({
@@ -162,8 +158,7 @@ router.get('/users/:userId', async (req, res, next) => {
     const user = await User.findById(userId)
       .populate('boards')
       .populate('lists')
-      .populate('jobs')
-      .populate('roles');
+      .populate('jobs');
 
     if (!user) {
       return res.status(404).json({ message: 'No user was found' });
@@ -179,7 +174,6 @@ router.get('/users/:userId', async (req, res, next) => {
       boards,
       lists,
       jobs,
-      roles,
     } = user;
 
     const responseData = {
@@ -192,7 +186,6 @@ router.get('/users/:userId', async (req, res, next) => {
       boards,
       lists,
       jobs,
-      roles,
     };
 
     res.json(responseData);
@@ -240,7 +233,6 @@ router.put('/users/:userId', async (req, res, next) => {
         boards,
         lists,
         jobs,
-        roles,
       } = updatedPassword;
 
       const responseData = {
@@ -252,7 +244,6 @@ router.put('/users/:userId', async (req, res, next) => {
         boards,
         lists,
         jobs,
-        roles,
       };
 
       return res.json(responseData);
@@ -276,7 +267,6 @@ router.put('/users/:userId', async (req, res, next) => {
         boards,
         lists,
         jobs,
-        roles,
       } = updatedImage;
 
       const responseData = {
@@ -288,7 +278,6 @@ router.put('/users/:userId', async (req, res, next) => {
         boards,
         lists,
         jobs,
-        roles,
       };
 
       res.json(responseData);
@@ -438,7 +427,6 @@ router.delete('/users/:userId', async (req, res) => {
     await Boards.deleteMany({ userId });
     await Lists.deleteMany({ userId });
     await Jobs.deleteMany({ userId });
-    await Roles.deleteMany({ userId });
 
     const deletedUser = await User.findByIdAndDelete(userId);
 
