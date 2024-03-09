@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const User = require('../models/User.model');
 const Boards = require('../models/Boards.model');
-
+const Lists = require('../models/Lists.model');
 const Jobs = require('../models/Jobs.model');
 const Roles = require('../models/Roles.model');
 
 router.post('/roles', async (req, res, next) => {
-  const { roleName, userId, boardId, jobId } = req.body;
+  const { roleName, userId, boardId, listId, jobId } = req.body;
 
   try {
     const existingBoardRole = await Roles.findOne({ boardId, roleName });
@@ -17,6 +17,7 @@ router.post('/roles', async (req, res, next) => {
       })
         .populate('userId')
         .populate('boardId')
+        .populate('lists')
         .populate('jobs');
 
       res.status(201).json(updatedRole);
@@ -25,6 +26,7 @@ router.post('/roles', async (req, res, next) => {
         roleName,
         userId,
         boardId,
+        listId,
         jobId,
       });
 
@@ -36,11 +38,16 @@ router.post('/roles', async (req, res, next) => {
         $push: { roles: newRole._id },
       });
 
+      const list = await Lists.findByIdAndUpdate(listId, {
+        $push: { roles: newRole._id },
+      });
+
       const job = await Jobs.findByIdAndUpdate(jobId, { roleId: newRole._id });
 
       console.log('New Role', newRole);
       console.log('Updated User', user);
       console.log('Updated Board', board);
+      console.log('Updated List', list);
       console.log('Updated Job', job);
 
       res.status(201).json(newRole);
@@ -53,7 +60,11 @@ router.post('/roles', async (req, res, next) => {
 
 router.get('/roles', async (req, res, next) => {
   try {
-    const allRoles = await Roles.find({});
+    const allRoles = await Roles.find({})
+      .populate('userId')
+      .populate('boardId')
+      .populate('lists')
+      .populate('jobs');
     console.log('All Roles', allRoles);
     res.status(200).json(allRoles);
   } catch (error) {
@@ -71,6 +82,7 @@ router.get('/roles/:roleId', async (req, res, next) => {
     const role = await Roles.findById(roleId)
       .populate('userId')
       .populate('boardId')
+      .populate('lists')
       .populate('jobs');
 
     if (!role) {
@@ -85,7 +97,7 @@ router.get('/roles/:roleId', async (req, res, next) => {
 
 router.put('/roles/:roleId', async (req, res, next) => {
   const { roleId } = req.params;
-  const { roleName, userId, boardId, jobId } = req.body;
+  const { roleName, userId, boardId, listId, jobId } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(roleId)) {
@@ -98,6 +110,7 @@ router.put('/roles/:roleId', async (req, res, next) => {
         roleName,
         userId,
         boardId,
+        listId,
         jobId,
       },
       { new: true }
