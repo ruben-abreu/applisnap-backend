@@ -105,6 +105,8 @@ router.delete('/boards/:boardId', async (req, res, next) => {
     await Lists.deleteMany({ boardId });
     await Jobs.deleteMany({ boardId });
 
+    await User.updateMany({}, { $pull: { boards: boardId } });
+
     await Boards.findByIdAndDelete(boardId);
     res.json({ message: 'Board deleted successfully' });
   } catch (error) {

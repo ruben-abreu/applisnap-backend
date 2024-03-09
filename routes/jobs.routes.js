@@ -166,6 +166,13 @@ router.delete('/jobs/:jobId', async (req, res, next) => {
     }
 
     await Jobs.findByIdAndDelete(jobId);
+
+    await User.updateMany({}, { $pull: { jobs: jobId } });
+
+    await Lists.updateMany({}, { $pull: { jobs: jobId } });
+
+    await Boards.updateMany({}, { $pull: { jobs: jobId } });
+
     res.json({ message: 'Job deleted successfully' });
   } catch (error) {
     console.log('An error occurred deleting the job', error);
