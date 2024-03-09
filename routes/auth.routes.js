@@ -72,6 +72,8 @@ router.post('/signup', async (req, res, next) => {
       boards: newUser.boards,
       lists: newUser.lists,
       jobs: newUser.jobs,
+      createdAt: newUser.createdAt,
+      updatedAt: newUser.updatedAt,
     });
   } catch (error) {
     console.log('Error creating the user', error);
@@ -126,6 +128,8 @@ router.post('/login', async (req, res, next) => {
         boards: payload.boards,
         lists: payload.lists,
         jobs: payload.jobs,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       });
     } else {
       return res.status(401).json({
@@ -186,6 +190,8 @@ router.get('/users/:userId', async (req, res, next) => {
       boards,
       lists,
       jobs,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
 
     res.json(responseData);
@@ -244,6 +250,8 @@ router.put('/users/:userId', async (req, res, next) => {
         boards,
         lists,
         jobs,
+        createdAt: updatedPassword.createdAt,
+        updatedAt: updatedPassword.updatedAt,
       };
 
       return res.json(responseData);
@@ -278,6 +286,8 @@ router.put('/users/:userId', async (req, res, next) => {
         boards,
         lists,
         jobs,
+        createdAt: updatedImage.createdAt,
+        updatedAt: updatedImage.updatedAt,
       };
 
       res.json(responseData);
