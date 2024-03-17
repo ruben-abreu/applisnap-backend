@@ -127,6 +127,14 @@ router.put('/jobs/:jobId', async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
       return res.status(400).json({ message: 'Id is not valid' });
     }
+
+    const job = await Jobs.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found!' });
+    }
+    const prevListId = job.listId;
+    const prevBoardId = job.boardId;
+
     const updatedJob = await Jobs.findByIdAndUpdate(
       jobId,
       {
@@ -151,6 +159,19 @@ router.put('/jobs/:jobId', async (req, res, next) => {
     if (!updatedJob) {
       return res.status(404).json({ message: 'Job not found!' });
     }
+
+    if (listId !== prevListId) {
+      await Lists.updateOne({ _id: prevListId }, { $pull: { jobs: jobId } });
+
+      await Lists.updateOne({ _id: listId }, { $addToSet: { jobs: jobId } });
+    }
+
+    if (boardId !== prevBoardId) {
+      await Boards.updateOne({ _id: prevBoardId }, { $pull: { jobs: jobId } });
+
+      await Boards.updateOne({ _id: boardId }, { $addToSet: { jobs: jobId } });
+    }
+
     res.json(updatedJob);
   } catch (error) {
     console.log('An error occurred updating the job', error);
