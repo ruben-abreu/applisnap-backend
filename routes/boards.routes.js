@@ -102,12 +102,28 @@ router.delete('/boards/:boardId', async (req, res, next) => {
       return res.status(400).json({ message: 'Id is not valid' });
     }
 
-    await Lists.deleteMany({ boardId });
-    await Jobs.deleteMany({ boardId });
+    const listsToDelete = await Lists.find({ boardId: boardId }, '_id');
+    const listIdsToDelete = listsToDelete.map(list => list._id);
 
-    await User.updateMany({}, { $pull: { boards: boardId } });
+    const jobsToDelete = await Jobs.find({ boardId: boardId }, '_id');
+    const jobIdsToDelete = jobsToDelete.map(job => job._id);
+
+    await Lists.deleteMany({ boardId: boardId });
+    await Jobs.deleteMany({ boardId: boardId });
+
+    await User.updateMany(
+      {},
+      {
+        $pull: {
+          boards: boardId,
+          lists: { $in: listIdsToDelete },
+          jobs: { $in: jobIdsToDelete },
+        },
+      }
+    );
 
     await Boards.findByIdAndDelete(boardId);
+
     res.json({ message: 'Board deleted successfully' });
   } catch (error) {
     console.log('An error occurred deleting the board', error);

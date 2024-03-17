@@ -434,9 +434,9 @@ router.delete('/users/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
-    await Boards.deleteMany({ userId });
-    await Lists.deleteMany({ userId });
-    await Jobs.deleteMany({ userId });
+    await Boards.deleteMany({ userId: userId });
+    await Lists.deleteMany({ userId: userId });
+    await Jobs.deleteMany({ userId: userId });
 
     const deletedUser = await User.findByIdAndDelete(userId);
 

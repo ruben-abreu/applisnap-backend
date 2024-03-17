@@ -85,7 +85,7 @@ router.get('/lists/:listId', async (req, res, next) => {
 
 router.put('/lists/:listId', async (req, res, next) => {
   const { listId } = req.params;
-  const { listName, userId, boardId } = req.body;
+  const { listName, userId, boardId, jobs } = req.body;
   try {
     if (!mongoose.Types.ObjectId.isValid(listId)) {
       return res.status(400).json({ message: 'Id is not valid' });
@@ -93,7 +93,7 @@ router.put('/lists/:listId', async (req, res, next) => {
 
     const updatedList = await Lists.findByIdAndUpdate(
       listId,
-      { listName, userId, boardId },
+      { listName, userId, boardId, jobs },
       { new: true }
     );
 

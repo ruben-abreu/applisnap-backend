@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const listSchema = new Schema({
+const listsSchema = new Schema({
   listName: {
     type: String,
     required: true,
@@ -11,4 +11,4 @@ const listSchema = new Schema({
   jobs: [{ type: Schema.Types.ObjectId, ref: 'Jobs' }],
 });
 
-module.exports = model('Lists', listSchema);
+module.exports = model('Lists', listsSchema);
