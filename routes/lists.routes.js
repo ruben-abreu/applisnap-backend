@@ -55,7 +55,7 @@ router.post('/lists', async (req, res, next) => {
 });
 
 router.get('/lists', async (req, res, next) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
 
   try {
     const allLists = await Lists.find({ userId: userId }).populate('jobs');

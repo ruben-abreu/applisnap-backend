@@ -35,7 +35,7 @@ router.post('/boards', async (req, res, next) => {
 });
 
 router.get('/boards', async (req, res, next) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
 
   try {
     const allBoards = await Boards.find({ userId: userId })
@@ -52,6 +52,7 @@ router.get('/boards', async (req, res, next) => {
 
 router.get('/boards/:boardId', async (req, res, next) => {
   const { boardId } = req.params;
+
   try {
     if (!mongoose.Types.ObjectId.isValid(boardId)) {
       return res.status(400).json({ message: 'Id is not valid' });
