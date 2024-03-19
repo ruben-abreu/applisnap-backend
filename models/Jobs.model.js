@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose');
 
 const jobsSchema = new Schema({
-  companyName: String,
-  roleName: String,
+  companyName: { type: String, required: [true, 'Company Name is required.'] },
+  roleName: { type: String, required: [true, 'Role Name is required.'] },
   domain: String,
   jobURL: String,
   jobDescription: String,
