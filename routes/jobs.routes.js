@@ -76,8 +76,10 @@ router.post('/jobs', async (req, res, next) => {
 });
 
 router.get('/jobs', async (req, res, next) => {
+  const { userId } = req.body;
+
   try {
-    const allJobs = await Jobs.find({});
+    const allJobs = await Jobs.find({ userId: userId });
     console.log('All Jobs', allJobs);
     res.status(200).json(allJobs);
   } catch (error) {

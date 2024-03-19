@@ -35,8 +35,12 @@ router.post('/boards', async (req, res, next) => {
 });
 
 router.get('/boards', async (req, res, next) => {
+  const { userId } = req.body;
+
   try {
-    const allBoards = await Boards.find({}).populate('lists').populate('jobs');
+    const allBoards = await Boards.find({ userId: userId })
+      .populate('lists')
+      .populate('jobs');
 
     console.log('All Boards', allBoards);
     res.status(200).json(allBoards);

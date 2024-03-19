@@ -55,8 +55,10 @@ router.post('/lists', async (req, res, next) => {
 });
 
 router.get('/lists', async (req, res, next) => {
+  const { userId } = req.body;
+
   try {
-    const allLists = await Lists.find({}).populate('jobs');
+    const allLists = await Lists.find({ userId: userId }).populate('jobs');
     console.log('All Lists', allLists);
     res.status(200).json(allLists);
   } catch (error) {
