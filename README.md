@@ -4,32 +4,32 @@
 
 ### Board Routes
 
-| Method | Route                | Description              |
-| ------ | -------------------- | ------------------------ |
-| GET    | /api/boards          | Returns all boards       |
-| GET    | /api/boards/:boardId | Returns a specific board |
-| POST   | /api/boards          | Adds a new board         |
-| PUT    | /api/boards/:boardId | Edits a board            |
-| DELETE | /api/boards/:boardId | Deletes a board          |
+| Method | Route                        | Description                               |
+| ------ | ---------------------------- | ----------------------------------------- |
+| GET    | /api/boards?userId=${userId} | Returns all boards from a specific userId |
+| GET    | /api/boards/:boardId         | Returns a specific board                  |
+| POST   | /api/boards                  | Adds a new board                          |
+| PUT    | /api/boards/:boardId         | Edits a board                             |
+| DELETE | /api/boards/:boardId         | Deletes a board                           |
 
 ### List Routes
 
-| Method | Route              | Description              |
-| ------ | ------------------ | ------------------------ |
-| GET    | /api/lists         | Returns all lists        |
-| GET    | /api/lists/:listId | Returns a specific list  |
-| POST   | /api/lists         | Adds a new list          |
-| PUT    | /api/lists/:listId | Edits the specified list |
+| Method | Route                       | Description                              |
+| ------ | --------------------------- | ---------------------------------------- |
+| GET    | /api/lists?userId=${userId} | Returns all lists from a specific userId |
+| GET    | /api/lists/:listId          | Returns a specific list                  |
+| POST   | /api/lists                  | Adds a new list                          |
+| PUT    | /api/lists/:listId          | Edits the specified list                 |
 
 ### Job Routes
 
-| Method | Route            | Description                 |
-| ------ | ---------------- | --------------------------- |
-| GET    | /api/jobs        | Returns all jobs            |
-| GET    | /api/jobs/:jobId | Returns a specific job      |
-| POST   | /api/jobs        | Adds a new job              |
-| PUT    | /api/jobs/:jobId | Edits the specified project |
-| DELETE | /api/jobs/:jobId | Deletes a job               |
+| Method | Route                      | Description                             |
+| ------ | -------------------------- | --------------------------------------- |
+| GET    | /api/jobs?userId=${userId} | Returns all jobs from a specific userId |
+| GET    | /api/jobs/:jobId           | Returns a specific job                  |
+| POST   | /api/jobs                  | Adds a new job                          |
+| PUT    | /api/jobs/:jobId           | Edits the specified project             |
+| DELETE | /api/jobs/:jobId           | Deletes a job                           |
 
 ### Auth Routes
 
