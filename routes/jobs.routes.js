@@ -23,6 +23,10 @@ router.post('/jobs', async (req, res, next) => {
     listId,
   } = req.body;
 
+  const updatedDate = { ...date };
+
+  updatedDate.interviews = [...new Set(updatedDate.interviews)];
+
   try {
     console.log('Incoming userId:', userId);
     const user = await User.findById(userId);
@@ -41,7 +45,7 @@ router.post('/jobs', async (req, res, next) => {
       workLocation,
       notes,
       customLabel,
-      date,
+      date: updatedDate,
       starred,
       userId,
       boardId,
@@ -125,6 +129,10 @@ router.put('/jobs/:jobId', async (req, res, next) => {
     listId,
   } = req.body;
 
+  const updatedDate = { ...date };
+
+  updatedDate.interviews = [...new Set(updatedDate.interviews)];
+
   try {
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
       return res.status(400).json({ message: 'Id is not valid' });
@@ -149,7 +157,7 @@ router.put('/jobs/:jobId', async (req, res, next) => {
         workLocation,
         notes,
         customLabel,
-        date,
+        date: updatedDate,
         starred,
         userId,
         boardId,
