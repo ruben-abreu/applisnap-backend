@@ -33,18 +33,18 @@
 
 ### Auth Routes
 
-| Method | Route                           | Description         |
-| ------ | ------------------------------- | ------------------- |
-| POST   | /auth/signup                    | Creates a new user  |
-| POST   | /auth/login                     | Logs the user       |
-| POST   | /auth/upload                    | Upload user photo   |
-| GET    | /auth/verify                    | Verifies the JWT    |
-| GET    | /auth/users/:userId             | Get user details    |
-| PUT    | /auth/users/:userId             | Change user details |
-| PUT    | /auth/forgot-password           | Forgot Password     |
-| PUT    | /auth/reset-password            | Reset Password      |
-| DELETE | /auth/users/:userId             | Delete user account |
-| DELETE | /auth//deleteImage/:imgPublicId | Delete image        |
+| Method | Route                          | Description         |
+| ------ | ------------------------------ | ------------------- |
+| POST   | /auth/signup                   | Creates a new user  |
+| POST   | /auth/login                    | Logs the user       |
+| POST   | /auth/upload                   | Upload user photo   |
+| GET    | /auth/verify                   | Verifies the JWT    |
+| GET    | /auth/users/:userId            | Get user details    |
+| PUT    | /auth/users/:userId            | Change user details |
+| PUT    | /auth/forgot-password          | Forgot Password     |
+| PUT    | /auth/reset-password           | Reset Password      |
+| DELETE | /auth/users/:userId            | Delete user account |
+| DELETE | /auth/deleteImage/:imgPublicId | Delete image        |
 
 ## Models
 
