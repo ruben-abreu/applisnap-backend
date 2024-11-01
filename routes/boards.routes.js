@@ -45,7 +45,7 @@ router.get('/boards', async (req, res, next) => {
     console.log('All Boards', allBoards);
     res.status(200).json(allBoards);
   } catch (error) {
-    console.log('Error retrieving all jobs', error);
+    console.log('Error retrieving all boards', error);
     next(error);
   }
 });
